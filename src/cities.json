@@ -1,0 +1,11 @@
+[
+    {
+      "name": "İstanbul",
+      "districts": ["Kadıköy", "Beşiktaş", "Üsküdar", "Şişli"]
+    },
+    {
+      "name": "Ankara",
+      "districts": ["Çankaya", "Keçiören", "Yenimahalle", "Mamak"]
+    }
+  ]
+  

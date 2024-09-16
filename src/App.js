@@ -39,7 +39,7 @@ import ReviewPdfViewer from "./Screens/PdfScreens/ReviewPdfViewer.js";
 import MainPaymentScreen from "./Screens/RentingScreens/MainPaymentScreen.js";
 
 // PASSWORD
-import UpdatePasswordScreen from "./Screens/PasswordScreens/UpdatePasswordScreen.js";
+import ResetPasswordScreen from "./Screens/PasswordScreens/ResetPasswordScreen.js";
 import ForgotPasswordScreen from "./Screens/PasswordScreens/ForgotPasswordScreen.js";
 
 

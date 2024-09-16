@@ -158,22 +158,22 @@ function Header({ user, setUser }) {
                         Admin Paneli
                       </Nav.Link>
                     )}
+
+                    {/* Sepet linki sadece kullanıcı giriş yapmışsa gösterilir */}
+                    <Nav.Link
+                      as={Link}
+                      to="/cart"
+                      active={location.pathname === "/cart"}
+                      style={
+                        location.pathname === "/cart"
+                          ? { backgroundColor: "rgba(111, 111, 128, .3)" }
+                          : {}
+                      }
+                    >
+                      Sepet
+                    </Nav.Link>
                   </>
                 )}
-
-                {/* Sepet linki */}
-                <Nav.Link
-                  as={Link}
-                  to="/cart"
-                  active={location.pathname === "/cart"}
-                  style={
-                    location.pathname === "/cart"
-                      ? { backgroundColor: "rgba(111, 111, 128, .3)" }
-                      : {}
-                  }
-                >
-                  Sepet
-                </Nav.Link>
               </Nav>
 
               {/* Giriş ve Kayıt Butonları */}

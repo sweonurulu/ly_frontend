@@ -93,3 +93,22 @@ export const resetPassword = async (resetCode, newPassword) => {
   }
 };
 
+export const changePassword = async (formData) => {
+  const token = Cookies.get('token'); // Token'ı al
+  if (!token) {
+    throw new Error('Giriş yapmanız gerekiyor.');
+  }
+
+  try {
+    const response = await HTTP.put('/users/changePassword', formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Şifre güncellenirken bir hata oluştu.');
+  }
+};
+
+

@@ -7,8 +7,10 @@ import {
   MDBContainer,
   MDBInput,
   MDBRow,
+  MDBCheckbox,
 } from "mdb-react-ui-kit";
 import { useSearchParams } from "react-router-dom";
+import MesafeliSatisModal from '../../Components/MesafeliSatisModal'; // Mesafeli Satış Sözleşmesi modalını import et
 
 const PaymentScreen = () => {
   const [searchParams] = useSearchParams();
@@ -24,6 +26,8 @@ const PaymentScreen = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false); // Mesafeli satış sözleşmesi için state
+  const [showModal, setShowModal] = useState(false); // Modal için state
 
   const validate = () => {
     const newErrors = {};
@@ -71,10 +75,12 @@ const PaymentScreen = () => {
     const validationErrors = validate();
     setErrors(validationErrors);
 
-    if (Object.keys(validationErrors).length === 0) {
+    if (Object.keys(validationErrors).length === 0 && isTermsAccepted) {
       alert(`Ödeme yapılıyor... Kitap No: ${bookNo}, Kiralama Süresi: ${rentalPeriod}`);
     }
   };
+
+  const toggleModal = () => setShowModal(!showModal); // Modal açma kapama
 
   return (
     <MDBContainer>
@@ -87,7 +93,7 @@ const PaymentScreen = () => {
               name="cardName"
               value={paymentData.cardName}
               onChange={handleChange}
-              size="md" // Boyutu küçültmek için "md" olarak ayarlandı
+              size="md"
               placeholder="Kart sahibinin adını girin"
               className="my-2"
             />
@@ -100,7 +106,7 @@ const PaymentScreen = () => {
                 name="cardNumber"
                 value={paymentData.cardNumber}
                 onChange={handleChange}
-                size="md" // Boyutu küçültmek için "md" olarak ayarlandı
+                size="md"
                 placeholder="1234 5678 1234 5678"
               />
               {errors.cardNumber && <p style={{ color: "red" }}>{errors.cardNumber}</p>}
@@ -111,7 +117,7 @@ const PaymentScreen = () => {
                 name="expiryDate"
                 value={paymentData.expiryDate}
                 onChange={handleChange}
-                size="md" // Boyutu küçültmek için "md" olarak ayarlandı
+                size="md"
                 placeholder="MM/YY"
               />
               {errors.expiryDate && <p style={{ color: "red" }}>{errors.expiryDate}</p>}
@@ -123,24 +129,52 @@ const PaymentScreen = () => {
                 value={paymentData.cvv}
                 onChange={handleChange}
                 type="password"
-                size="md" // Boyutu küçültmek için "md" olarak ayarlandı
+                size="md"
                 placeholder="CVV"
               />
               {errors.cvv && <p style={{ color: "red" }}>{errors.cvv}</p>}
             </MDBCol>
           </MDBRow>
+
+          {/* Mesafeli Satış Sözleşmesi Onayı */}
+          <MDBRow className="mt-3">
+            <MDBCol size="12">
+              <MDBCheckbox
+                name="isTermsAccepted"
+                id="terms"
+                label={
+                  <span>
+                    <a href="#" onClick={toggleModal}>
+                      Mesafeli Satış Sözleşmesini
+                    </a>{" "}
+                    kabul ediyorum
+                  </span>
+                }
+                checked={isTermsAccepted}
+                onChange={() => setIsTermsAccepted(!isTermsAccepted)}
+              />
+              {errors.isTermsAccepted && (
+                <p style={{ color: "red" }}>{errors.isTermsAccepted}</p>
+              )}
+            </MDBCol>
+          </MDBRow>
+
           <MDBBtn
             onClick={handlePayment}
             color="success"
-            size="md" // Buton boyutu da "md" olarak küçültüldü
+            size="md"
             block
             className="mt-3"
+            disabled={!isTermsAccepted} // Tik işaretlenmediği sürece buton devre dışı
             style={{ transition: "none" }}
           >
             Ödeme Yap
           </MDBBtn>
         </MDBCardBody>
       </MDBCard>
+
+      {/* Modal - Mesafeli Satış Sözleşmesi */}
+      <MesafeliSatisModal show={showModal} handleClose={toggleModal} />
     </MDBContainer>
   );
 };

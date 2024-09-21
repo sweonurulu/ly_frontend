@@ -84,14 +84,12 @@ const CartScreen = () => {
       return;
     }
 
-    // Alışveriş tamamlama işlemi için fiziksel kitap satın alma sayfasına yönlendirme
-    const bookDetails = cartItems.map((item) => ({
-      bookNo: item.bookId._id,
-      quantity: item.quantity,
-    }));
+    // Alışveriş tamamlama işlemi için ödeme sayfasına yönlendirme
+    const bookIds = cartItems.map((item) => item.bookId._id); // Sadece kitap ID'lerini alıyoruz
 
-    navigate("/book-purchase", {
-      state: { items: bookDetails, totalPrice },
+    // Kitap ID'lerini bir liste olarak ödeme sayfasına gönderiyoruz
+    navigate(`/payment`, {
+      state: { books: bookIds, totalPrice }, // Ödeme sayfasına kitap ID'leri ve toplam fiyatı gönderiyoruz
     });
   };
 

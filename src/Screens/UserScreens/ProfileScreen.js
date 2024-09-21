@@ -95,6 +95,13 @@ const ProfileScreen = ({ user }) => {
                 Şifremi Güncelle
               </Button>
 
+              {/* Admin kullanıcılarına "Admin Paneli" butonu */}
+              {profile.userType === "ADMIN" && (
+                <Button variant="warning" onClick={() => navigate('/admin')}>
+                  Admin Paneline Git
+                </Button>
+              )}
+
               {showPasswordForm && (
                 <Form onSubmit={handlePasswordChange} className="mt-3">
                   {passwordError && <Alert variant="danger">{passwordError}</Alert>}

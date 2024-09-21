@@ -22,3 +22,19 @@ export const updateGeneralRentedPrice = async (priceData) => {
     throw new Error(error.response?.data?.message || "Kiralama oranları güncellenirken bir hata oluştu.");
   }
 };
+
+// Kitap kiralama ve ödeme işlemi
+export const rentBook = async ({ bookId, customerData, rentalPeriod, paymentDetails }) => {
+  try {
+    const response = await HTTP.post("/renting/create-payment-session", {
+      bookId,         // Kitap ID'sini gönderiyoruz
+      customerData,   // Müşteri bilgilerini gönderiyoruz
+      rentalPeriod,   // Kiralama süresini gönderiyoruz
+      paymentDetails, // Ödeme bilgilerini gönderiyoruz
+    });
+    return response.data; // Backend'den gelen yanıtı dönüyoruz
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Kiralama işlemi sırasında bir hata oluştu.");
+  }
+};
+

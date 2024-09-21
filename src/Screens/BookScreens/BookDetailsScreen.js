@@ -26,7 +26,7 @@ const BookDetailsScreen = ({ book, bookId }) => {
                 className="mb-4"
                 onClick={() => window.open(`/review-pdf/${bookId}`, '_blank')}
               >
-                İçindekileri Gör
+                İçindekiler
               </Button>
             )}
 

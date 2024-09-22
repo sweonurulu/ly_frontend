@@ -6,6 +6,7 @@ const HTTP = axios.create({
   baseURL: "https://ly-backend-8gjq.onrender.com", 
   // https://ly-backend-8gjq.onrender.com
   // http://localhost:5000
+  // onur ulu
   headers: {
     'Content-Type': 'application/json',
 },

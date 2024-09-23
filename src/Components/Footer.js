@@ -77,7 +77,7 @@ const Footer = () => {
         <Row className="bg-dark text-white py-3">
           <Col className="text-center">
             <p>&copy; 2024 Lisans Yayıncılık. Tüm Hakları Saklıdır.</p>
-            <img src={paytrLogo} alt="PayTR" style={{ width: "100%", maxWidth: "1000px" }} />
+            {/*<img src={paytrLogo} alt="PayTR" style={{ width: "100%", maxWidth: "1000px" }} />*/}
           </Col>
         </Row>
       </Container>

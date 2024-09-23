@@ -36,7 +36,7 @@ const AuthModal = ({ show, handleClose, bookId }) => {
         <Button variant="primary" onClick={handleLogin}>
           Giriş Yap
         </Button>
-        <Button variant="secondary" onClick={handleGuestCheckout}>
+        <Button variant="secondary" onClick={handleGuestCheckout} disabled>
           Üye Olmadan Satın Al
         </Button>
       </Modal.Footer>

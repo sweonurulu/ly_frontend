@@ -3,7 +3,7 @@ import axios from "axios";
 import Cookies from 'js-cookie'; // veya token'ı sakladığınız başka bir yer
 
 const HTTP = axios.create({
-  baseURL: "https://ly-backend-8gjq.onrender.com", 
+  baseURL: "http://localhost:5000", 
   // https://ly-backend-8gjq.onrender.com
   // http://localhost:5000
   // onur ulu

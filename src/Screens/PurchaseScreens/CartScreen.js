@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Button, Card, ListGroup, Image, Form } from "react-bootstrap";
+import { Container, Row, Col, Button, Card, ListGroup, Form } from "react-bootstrap";
 import { getCart, removeFromCart } from "../../axios/cartApi"; // Sepet verisini almak için
 import { getProfile } from "../../axios/userApi"; // Kullanıcı profilini almak için
 import { useNavigate } from "react-router-dom";
@@ -54,7 +54,7 @@ const CartScreen = () => {
   const handleRemoveFromCart = async (bookId) => {
     try {
       await removeFromCart(userId, bookId); // Sepetten kaldır
-      setCartItems(cartItems.filter((item) => item.bookId._id !== bookId)); // Sepet listesini güncelle
+      setCartItems(cartItems.filter((item) => item.bookId?._id !== bookId)); // Sepet listesini güncelle
       toast.success("Ürün sepetten kaldırıldı.");
     } catch (error) {
       toast.error("Ürün sepetten çıkarılırken hata oluştu.");
@@ -64,7 +64,7 @@ const CartScreen = () => {
   const handleQuantityChange = (bookId, quantity) => {
     setCartItems(
       cartItems.map((item) =>
-        item.bookId._id === bookId ? { ...item, quantity: parseInt(quantity) } : item
+        item.bookId?._id === bookId ? { ...item, quantity: parseInt(quantity) } : item
       )
     );
   };
@@ -85,20 +85,12 @@ const CartScreen = () => {
     }
 
     // Alışveriş tamamlama işlemi için ödeme sayfasına yönlendirme
-    const bookIds = cartItems.map((item) => item.bookId._id); // Sadece kitap ID'lerini alıyoruz
+    const bookIds = cartItems.map((item) => item.bookId?._id); // Sadece kitap ID'lerini alıyoruz
 
     // Kitap ID'lerini bir liste olarak ödeme sayfasına gönderiyoruz
     navigate(`/payment`, {
       state: { books: bookIds, totalPrice }, // Ödeme sayfasına kitap ID'leri ve toplam fiyatı gönderiyoruz
     });
-  };
-
-  const renderImage = (bookImg) => {
-    if (bookImg && bookImg.startsWith("data:image")) {
-      return bookImg; // Zaten base64 formatında ise doğrudan kullan
-    }
-    // Base64 formatında ise eklemek için data:image/jpeg;base64 vb. ön ekler eklenir
-    return `data:image/jpeg;base64,${bookImg}`;
   };
 
   if (loading) {
@@ -122,24 +114,16 @@ const CartScreen = () => {
               <Card.Body>
                 <ListGroup variant="flush">
                   {cartItems.map((item) => (
-                    <ListGroup.Item key={item.bookId._id}>
+                    <ListGroup.Item key={item.bookId?._id}>
                       <Row>
-                        <Col md={2}>
-                          <Image
-                            src={renderImage(item.bookId.bookImg)} // Base64 formatını kullan
-                            fluid
-                            rounded
-                            alt={item.bookId.bookName}
-                          />
-                        </Col>
                         <Col md={4}>
-                          <h5>{item.bookId.bookName}</h5>
+                          <h5>{item.bookId?.bookName || "Bilinmeyen Kitap"}</h5> {/* Optional chaining ve varsayılan değer */}
                         </Col>
                         <Col md={3}>
                           <Form.Control
                             as="select"
                             value={item.quantity}
-                            onChange={(e) => handleQuantityChange(item.bookId._id, e.target.value)}
+                            onChange={(e) => handleQuantityChange(item.bookId?._id, e.target.value)} 
                           >
                             {[...Array(10).keys()].map((x) => (
                               <option key={x + 1} value={x + 1}>
@@ -153,7 +137,7 @@ const CartScreen = () => {
                           <Button
                             variant="danger"
                             className="mt-2"
-                            onClick={() => handleRemoveFromCart(item.bookId._id)}
+                            onClick={() => handleRemoveFromCart(item.bookId?._id)} 
                           >
                             Kaldır
                           </Button>
@@ -178,7 +162,7 @@ const CartScreen = () => {
                     </Row>
                   </ListGroup.Item>
                 </ListGroup>
-                <Button variant="success" className="mt-4 w-100" onClick={handleCheckout}>
+                <Button variant="success" className="mt-4 w-100" onClick={handleCheckout} disabled>
                   Alışverişi Tamamla
                 </Button>
               </Card.Body>

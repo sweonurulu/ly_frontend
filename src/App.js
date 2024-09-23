@@ -46,6 +46,7 @@ import SearchResultsScreen from "./Screens/BookScreens/SearchResultsScreen.js";
 // RENTING
 import MainPaymentScreen from "./Screens/PurchaseScreens/MainPaymentScreen.js";
 import MainRentalScreen from "./Screens/PurchaseScreens/MainRentalScreen.js";
+import MyRentalsScreen from "./Screens/UserScreens/MyRentalsScreen.js";
 
 // PASSWORD
 import ResetPasswordScreen from "./Screens/PasswordScreens/ResetPasswordScreen.js";
@@ -89,7 +90,7 @@ function App() {
             <Route path="/cart" element={<CartScreen />} />
             <Route path="/book-purchase" element={<BookPurchaseScreen />} />
 
-            <Route path="/admin/signup" element={<AdminSignupScreen />} />
+            {/*<Route path="/admin/signup" element={<AdminSignupScreen />} />*/}
             <Route
               path="/admin"
               element={
@@ -122,6 +123,7 @@ function App() {
             <Route path="/price-list" element={<PriceListScreen />} />
             <Route path="/pdf-viewer/:pdfId" element={<NavbarPdfViewer />} />
             <Route path="/profile" element={<ProfileScreen user={user} />} />
+            <Route path="/my-rentals" element={<MyRentalsScreen/>} />
 
             <Route
               path="/create-book/*"

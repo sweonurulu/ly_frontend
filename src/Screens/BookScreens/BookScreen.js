@@ -127,6 +127,7 @@ const BookScreen = () => {
                     variant="primary"
                     onClick={handlePurchase}
                     className="mt-2 w-100"
+                    disabled
                   >
                     Satın Al
                   </Button>

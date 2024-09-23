@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { MDBRow, MDBCol, MDBContainer } from "mdb-react-ui-kit";
 import CustomerInfoScreen from "./CustomerInfoScreen";
-import PaymentScreen from "./PaymentScreen"; 
 import RentalDetailsDisplay from "./RentalDetailsDisplay";
 import { getBookById } from "../../axios/bookApi";
+import { getProfile } from "../../axios/userApi"; // Kullanıcı profilini çekmek için import
 import Footer from '../../Components/Footer';
 import { rentBook } from "../../axios/rentingApi";
 import { useLocation } from 'react-router-dom';
@@ -13,10 +13,25 @@ const MainRentalScreen = () => {
   const [book, setBook] = useState(null);
   const [bookDetails, setBookDetails] = useState(null);
   const [rentalId, setRentalId] = useState(null);
-  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [iframeToken, setIframeToken] = useState(null); // iframe token state
   const [rentalPeriod, setRentalPeriod] = useState("3 months");
+  const [userId, setUserId] = useState(null); // Kullanıcı ID'sini tutmak için state
 
   const location = useLocation();
+
+  // Kullanıcı profil bilgilerini çek
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const profile = await getProfile(); // Profil bilgilerini çekiyoruz
+        setUserId(profile._id); // Kullanıcı ID'sini state'e kaydediyoruz
+      } catch (error) {
+        console.error("Profil bilgileri alınamadı:", error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   // Kitap ID'sini ve kiralama süresini URL'den alıyoruz
   useEffect(() => {
@@ -49,33 +64,31 @@ const MainRentalScreen = () => {
     }
   }, [book]);
 
-  const handleCustomerSubmit = (data) => {
-    setCustomerData(data);
-    setShowPaymentForm(true); 
-  };
-
-  const handlePayment = async (paymentDetails) => {
-    try {
-      // Ödeme miktarını hesaplayın (örneğin, kitap fiyatını kiralama süresiyle çarpabilirsiniz)
-      const rentalMultiplier = rentalPeriod === "3 months" ? 0.3 : rentalPeriod === "6 months" ? 0.5 : 1;
-      const paymentAmount = bookDetails.price * rentalMultiplier;
+  const handleCustomerSubmit = async (data) => {
+    if (!userId) {
+      console.error("Kullanıcı ID'si henüz alınamadı.");
+      return;
+    }
+    
+    setCustomerData({
+      ...data,
+      userId // Kullanıcı ID'sini customerData'ya ekliyoruz
+    });
   
+    try {
       const response = await rentBook({
         bookId: book,
-        customerData,
+        customerData: { ...data, userId },
         rentalPeriod,
-        paymentDetails,
-        //paymentAmount, // Hesaplanan toplam ödeme miktarını gönderiyoruz
       });
   
-      if (response.rentalId) {
-        setRentalId(response.rentalId);
+      if (response.iframeToken) {
+        setIframeToken(response.iframeToken); // iframe token alındığında kaydediyoruz
       }
     } catch (error) {
       console.error("Ödeme sırasında bir hata oluştu:", error);
     }
   };
-  
 
   return (
     <>
@@ -90,9 +103,15 @@ const MainRentalScreen = () => {
           </MDBCol>
 
           <MDBCol md="6">
-            {showPaymentForm && (
+            {/* İframe token varsa sağ tarafta ödeme iframe'i görüntülenir */}
+            {iframeToken && (
               <div className="mt-4">
-                <PaymentScreen onPayment={handlePayment} />
+                <iframe
+                  src={`https://www.paytr.com/odeme/api/goster/${iframeToken}`}
+                  frameBorder="0"
+                  scrolling="no"
+                  style={{ width: "100%", height: "450px" }}
+                ></iframe>
               </div>
             )}
           </MDBCol>

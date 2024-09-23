@@ -24,17 +24,26 @@ export const updateGeneralRentedPrice = async (priceData) => {
 };
 
 // Kitap kiralama ve ödeme işlemi
-export const rentBook = async ({ bookId, customerData, rentalPeriod, paymentDetails }) => {
+export const rentBook = async ({ bookId, customerData, rentalPeriod }) => {
   try {
     const response = await HTTP.post("/renting/create-payment-session", {
-      bookId,         // Kitap ID'sini gönderiyoruz
-      customerData,   // Müşteri bilgilerini gönderiyoruz
-      rentalPeriod,   // Kiralama süresini gönderiyoruz
-      paymentDetails, // Ödeme bilgilerini gönderiyoruz
+      bookId,
+      customerData,
+      rentalPeriod
     });
-    return response.data; // Backend'den gelen yanıtı dönüyoruz
+    return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || "Kiralama işlemi sırasında bir hata oluştu.");
   }
 };
+
+export const getRentalsByUser = async (userId) => {
+  try {
+    const response = await HTTP.get(`/renting/rentals/${userId}`);
+    return response.data; // Kiralamaları döndür
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Kiralama listesi alınırken bir hata oluştu.");
+  }
+};
+
 

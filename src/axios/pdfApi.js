@@ -37,20 +37,16 @@ export const getPdfContent = async (pdfId) => {
   }
 };
 
-export const getBookPdf = async (bookId) => {
+export const getBookPdf = async (bookId, token) => {
   try {
-    const response = await HTTP.get(`/pdf/books/pdf/${bookId}`);
-    const { pdfFile, contentType } = response.data;
+    const response = await HTTP.get(`/pdf/books/pdf/${bookId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: 'blob', // PDF dosyasını blob olarak alıyoruz
+    });
 
-    const byteCharacters = atob(pdfFile); // Base64 formatını çöz
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: contentType });
-
-    return URL.createObjectURL(blob); // Blob'dan bir URL oluştur ve döndür
+    return URL.createObjectURL(response.data); // PDF blob'dan bir URL oluşturup döndürüyoruz
   } catch (error) {
     console.error("PDF dosyası alınırken bir hata oluştu:", error);
     throw error;

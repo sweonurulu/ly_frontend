@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, InputGroup, Row, Col } from "react-bootstrap";
-import { BsSearch, BsPerson, BsBag, BsBell } from "react-icons/bs"; // Çan ikonu için BsBell eklendi
+import { BsSearch, BsPerson, BsBag, BsBell, BsBook  } from "react-icons/bs"; // Çan ikonu için BsBell eklendi
 import { Link, useNavigate } from "react-router-dom";
 import { getProfile, logout } from "../axios/userApi";
 import logo from "../ustlogo.png";
@@ -90,13 +90,26 @@ const SearchBar = () => {
           {user ? (
             <>
               {/* Bildirim simgesi */}
-              {/*<Button
+              <Button
                 variant="link"
                 style={{ color: "#000", marginRight: "10px" }}
-                onClick={() => navigate("/notifications")} 
+                onClick={() => navigate("/notifications")}
               >
-                <BsBell size={24} /> 
-              </Button>*/}
+                <BsBell size={24} />
+              </Button>
+
+              {/* Kitap simgesi (My Rentals sayfasına yönlendirir) */}
+              <Button
+                variant="link"
+                style={{ color: "#000", marginRight: "10px" }}
+              >
+                <Link
+                  to="/my-rentals"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <BsBook size={24} /> {/* Kitap simgesi */}
+                </Link>
+              </Button>
 
               <Link
                 to="/profile"
@@ -115,7 +128,7 @@ const SearchBar = () => {
                   to="/cart"
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
-                  <BsBag size={24} /> {/* Sepet simgesi */}
+                  <BsBag size={24} />
                 </Link>
               </Button>
 

@@ -1,39 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getBookPdf } from '../../axios/pdfApi'; // Axios fonksiyonunu import et
+import { getBookPdf } from '../../axios/pdfApi'; // PDF API'sini import ediyoruz
+import PDFViewer from './PDFViewer'; // PDFViewer bileşenini import ediyoruz
 import { Container, Spinner, Alert } from 'react-bootstrap';
+import Cookies from 'js-cookie';
 import Footer from "../../Components/Footer";
 
 const EbookPDF = () => {
-  const { bookPdfId } = useParams();
+  const { bookId } = useParams(); // URL'den bookId'yi alıyoruz
+  const [pdfUrl, setPdfUrl] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [pdfData, setPdfData] = useState(null);
 
   useEffect(() => {
     const fetchPdf = async () => {
       try {
-        // PDF verisini backend'den getir
-        const response = await getBookPdf(bookPdfId);
-
-        // PDF verisini blob formatına çevir
-        const pdfBlob = new Blob([response], { type: 'application/pdf' });
-        const pdfUrl = URL.createObjectURL(pdfBlob);
-
-        setPdfData(pdfUrl); // PDF URL'sini state'e kaydet
+        const token = Cookies.get('token'); // Kullanıcı token'ını alıyoruz
+        const pdfBlobUrl = await getBookPdf(bookId, token); // PDF verisini backend'den alıyoruz
+        setPdfUrl(pdfBlobUrl); // PDF URL'sini state'e kaydediyoruz
         setLoading(false);
       } catch (error) {
-        setError('PDF yüklenirken bir hata oluştu.');
+        setError("PDF yüklenirken bir hata oluştu.");
         setLoading(false);
       }
     };
 
     fetchPdf();
-  }, [bookPdfId]);
+  }, [bookId]);
 
   if (loading) {
     return (
-      <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+      <Container className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
         <Spinner animation="border" />
       </Container>
     );
@@ -49,17 +46,8 @@ const EbookPDF = () => {
 
   return (
     <Container className="mt-5">
-      {pdfData && (
-        <iframe
-          src={pdfData}
-          title="PDF Viewer"
-          width="100%"
-          height="800px"
-          style={{ border: 'none' }}
-        />
-      )}
-    
-    <Footer />
+      {pdfUrl ? <PDFViewer pdfUrl={pdfUrl} /> : <Alert variant="danger">PDF verisi bulunamadı</Alert>}
+      <Footer />
     </Container>
   );
 };

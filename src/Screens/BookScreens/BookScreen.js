@@ -12,7 +12,7 @@ import BookDetailsScreen from "./BookDetailsScreen"; // Kitap Detayları bileşe
 import AuthModal from "../../Components/AuthModal"; // AuthModal bileşenini import et
 
 const BookScreen = () => {
-  const { bookId } = useParams(); 
+  const { bookId } = useParams();
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,7 +23,7 @@ const BookScreen = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const data = await getBookById(bookId); 
+        const data = await getBookById(bookId);
         setBook(data);
         setLoading(false);
       } catch (err) {
@@ -60,7 +60,8 @@ const BookScreen = () => {
       setShowAuthModal(true);
       return;
     }
-    
+
+    // Kitap ID'yi doğrudan URL'ye ekleyerek satın alma sayfasına yönlendir
     navigate(`/payment?bookId=${book._id}&purchase=true`);
   };
 
@@ -89,8 +90,9 @@ const BookScreen = () => {
       setShowAuthModal(true);
       return;
     }
-    
-    navigate(`/payment?bookId=${book._id}&rentalPeriod=${rentalPeriod}`);
+
+    // Kitap ID'si ve kiralama süresi ile birlikte rental sayfasına yönlendirme
+    navigate(`/rental?bookId=${book._id}&rentalPeriod=${rentalPeriod}`);
   };
 
   const handleEditBook = () => {
@@ -121,20 +123,33 @@ const BookScreen = () => {
               <Card>
                 <Card.Body>
                   <h4>Fiyat: {book.price} TL</h4>
-                  <Button variant="primary" onClick={handlePurchase} className="mt-2 w-100">
+                  <Button
+                    variant="primary"
+                    onClick={handlePurchase}
+                    className="mt-2 w-100"
+                    disabled
+                  >
                     Satın Al
                   </Button>
-                  
+
                   {/* Eğer kullanıcı giriş yapmışsa Sepete Ekle butonunu göster */}
                   {user && (
                     <>
-                      <Button variant="success" onClick={handleAddToCart} className="mt-2 w-100">
+                      <Button
+                        variant="success"
+                        onClick={handleAddToCart}
+                        className="mt-2 w-100"
+                      >
                         Sepete Ekle
                       </Button>
 
                       {/* Eğer kullanıcı admin ise Kitabı Düzenle butonunu göster */}
                       {user.userType === "ADMIN" && (
-                        <Button variant="warning" onClick={handleEditBook} className="mt-2 w-100">
+                        <Button
+                          variant="warning"
+                          onClick={handleEditBook}
+                          className="mt-2 w-100"
+                        >
                           Kitabı Düzenle
                         </Button>
                       )}
@@ -171,12 +186,16 @@ const BookScreen = () => {
           </Col>
         </Row>
       </Container>
-      
+
       {/* AuthModal bileşeni */}
-      <AuthModal show={showAuthModal} handleClose={() => setShowAuthModal(false)} />
+      <AuthModal
+        show={showAuthModal}
+        handleClose={() => setShowAuthModal(false)}
+        bookId={book._id}
+      />
 
       <Footer />
-      <Toaster /> 
+      <Toaster />
     </>
   );
 };

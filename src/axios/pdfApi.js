@@ -36,3 +36,19 @@ export const getPdfContent = async (pdfId) => {
     throw error;
   }
 };
+
+export const getBookPdf = async (bookId, token) => {
+  try {
+    const response = await HTTP.get(`/pdf/books/pdf/${bookId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: 'blob', // PDF dosyasını blob olarak alıyoruz
+    });
+
+    return URL.createObjectURL(response.data); // PDF blob'dan bir URL oluşturup döndürüyoruz
+  } catch (error) {
+    console.error("PDF dosyası alınırken bir hata oluştu:", error);
+    throw error;
+  }
+};

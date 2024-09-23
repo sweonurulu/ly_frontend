@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Card, Button, Form, Alert } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Container, Card, Button, Form, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { getProfile, changePassword } from "../../axios/userApi"; // changePassword fonksiyonunu ekledik
-import Footer from '../../Components/Footer'; // Footer bileşenini import
+import Footer from "../../Components/Footer"; // Footer bileşenini import
 
 const ProfileScreen = ({ user }) => {
   const [profile, setProfile] = useState(user);
@@ -10,9 +10,9 @@ const ProfileScreen = ({ user }) => {
   const [error, setError] = useState(null);
   const [showPasswordForm, setShowPasswordForm] = useState(false); // Şifre formu görünürlüğü için state
   const [passwordFormData, setPasswordFormData] = useState({
-    oldPassword: '',
-    newPassword: '',
-    confirmPassword: '',
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
   });
   const [passwordError, setPasswordError] = useState(null);
   const [passwordSuccess, setPasswordSuccess] = useState(null);
@@ -27,7 +27,7 @@ const ProfileScreen = ({ user }) => {
           setProfile(data);
         } catch (error) {
           setError(error.message);
-          navigate('/signin');
+          navigate("/signin");
         } finally {
           setLoading(false);
         }
@@ -50,7 +50,9 @@ const ProfileScreen = ({ user }) => {
       setPasswordSuccess("Şifre başarıyla güncellendi.");
       setPasswordError(null); // Başarıyla değiştiği için hata sıfırlanır
     } catch (error) {
-      setPasswordError(error.message || "Şifre güncellenirken bir hata oluştu.");
+      setPasswordError(
+        error.message || "Şifre güncellenirken bir hata oluştu."
+      );
       setPasswordSuccess(null);
     }
   };
@@ -71,18 +73,23 @@ const ProfileScreen = ({ user }) => {
             <Card.Body>
               <Card.Title>Profil Bilgileri</Card.Title>
               <Card.Text>
-                <strong>Ad:</strong> {profile.name}<br />
-                <strong>Email:</strong> {profile.email}<br />
+                <strong>Ad:</strong> {profile.name}
+                <br />
+                <strong>Email:</strong> {profile.email}
+                <br />
                 <strong>Telefon Numarası:</strong> {profile.phoneNumber}
               </Card.Text>
-              <Button variant="primary" onClick={() => navigate('/editProfile')}>
+              <Button
+                variant="primary"
+                onClick={() => navigate("/editProfile")}
+              >
                 Profili Düzenle
               </Button>
               <Button
                 variant="primary"
                 onClick={() =>
                   navigate("/address", {
-                    state: { userId: profile._id }
+                    state: { userId: profile._id },
                   })
                 }
               >
@@ -95,10 +102,25 @@ const ProfileScreen = ({ user }) => {
                 Şifremi Güncelle
               </Button>
 
+              {/* Admin kullanıcılarına "Admin Paneli" butonu */}
+              {profile.userType === "ADMIN" && (
+                <Button variant="warning" onClick={() => navigate("/admin")}>
+                  Admin Paneline Git
+                </Button>
+              )}
+              {/* Admin kullanıcılarına "Admin Paneli" butonu */}
+              {/*<Button variant="warning" onClick={() => navigate("/my-rentals")}>
+                Kiraladığım kitaplar
+              </Button>*/}
+
               {showPasswordForm && (
                 <Form onSubmit={handlePasswordChange} className="mt-3">
-                  {passwordError && <Alert variant="danger">{passwordError}</Alert>}
-                  {passwordSuccess && <Alert variant="success">{passwordSuccess}</Alert>}
+                  {passwordError && (
+                    <Alert variant="danger">{passwordError}</Alert>
+                  )}
+                  {passwordSuccess && (
+                    <Alert variant="success">{passwordSuccess}</Alert>
+                  )}
 
                   <Form.Group className="mb-3">
                     <Form.Label>Eski Şifre</Form.Label>
@@ -106,7 +128,10 @@ const ProfileScreen = ({ user }) => {
                       type="password"
                       value={passwordFormData.oldPassword}
                       onChange={(e) =>
-                        setPasswordFormData({ ...passwordFormData, oldPassword: e.target.value })
+                        setPasswordFormData({
+                          ...passwordFormData,
+                          oldPassword: e.target.value,
+                        })
                       }
                       placeholder="Eski Şifre"
                       required
@@ -119,7 +144,10 @@ const ProfileScreen = ({ user }) => {
                       type="password"
                       value={passwordFormData.newPassword}
                       onChange={(e) =>
-                        setPasswordFormData({ ...passwordFormData, newPassword: e.target.value })
+                        setPasswordFormData({
+                          ...passwordFormData,
+                          newPassword: e.target.value,
+                        })
                       }
                       placeholder="Yeni Şifre"
                       required
@@ -132,7 +160,10 @@ const ProfileScreen = ({ user }) => {
                       type="password"
                       value={passwordFormData.confirmPassword}
                       onChange={(e) =>
-                        setPasswordFormData({ ...passwordFormData, confirmPassword: e.target.value })
+                        setPasswordFormData({
+                          ...passwordFormData,
+                          confirmPassword: e.target.value,
+                        })
                       }
                       placeholder="Yeni Şifreyi Onayla"
                       required

@@ -1,54 +1,53 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
-import { Container, Row, Col } from "react-bootstrap";
-import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getBookPdf } from '../../axios/pdfApi'; // PDF API'sini import ediyoruz
+import PDFViewer from './PDFViewer'; // PDFViewer bileşenini import ediyoruz
+import { Container, Spinner, Alert } from 'react-bootstrap';
+import Cookies from 'js-cookie';
+import Footer from "../../Components/Footer";
 
 const EbookPDF = () => {
-  const { bookPdfId } = useParams(); // Dinamik ID'yi almak için useParams kullanılır
-  const [pdfFile, setPdfFile] = useState(null); // PDF dosyası state
-  const [numPages, setNumPages] = useState(null); // Toplam sayfa sayısı
+  const { bookId } = useParams(); // URL'den bookId'yi alıyoruz
+  const [pdfUrl, setPdfUrl] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Dinamik olarak ilgili PDF dosyasını fetch etmek veya bir API'den almak
     const fetchPdf = async () => {
       try {
-        // API çağrısı yaparak bookPdfId'ye ait PDF dosyasını al
-        // Örneğin:
-        // const response = await fetch(`/api/books/pdf/${bookPdfId}`);
-        // const pdfData = await response.blob();
-        // setPdfFile(URL.createObjectURL(pdfData));
-        
-        // Şu anlık varsayılan bir PDF dosyasını gösteriyoruz
-        setPdfFile(`/path/to/pdf/files/${bookPdfId}.pdf`); // Kendi PDF dosya yolunuzu ekleyin
+        const token = Cookies.get('token'); // Kullanıcı token'ını alıyoruz
+        const pdfBlobUrl = await getBookPdf(bookId, token); // PDF verisini backend'den alıyoruz
+        setPdfUrl(pdfBlobUrl); // PDF URL'sini state'e kaydediyoruz
+        setLoading(false);
       } catch (error) {
-        console.error("PDF dosyası yüklenirken bir hata oluştu:", error);
+        setError("PDF yüklenirken bir hata oluştu.");
+        setLoading(false);
       }
     };
 
     fetchPdf();
-  }, [bookPdfId]);
+  }, [bookId]);
 
-  const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
-  };
+  if (loading) {
+    return (
+      <Container className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
+        <Spinner animation="border" />
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container className="mt-5">
+        <Alert variant="danger">{error}</Alert>
+      </Container>
+    );
+  }
 
   return (
-    <Container>
-      <Row className="justify-content-center">
-        <Col md={8}>
-          <h2>E-Kitap PDF Görüntüleyici</h2>
-          {pdfFile ? (
-            <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
-              {Array.from(new Array(numPages), (el, index) => (
-                <Page key={`page_${index + 1}`} pageNumber={index + 1} />
-              ))}
-            </Document>
-          ) : (
-            <p>PDF dosyası yükleniyor...</p>
-          )}
-        </Col>
-      </Row>
+    <Container className="mt-5">
+      {pdfUrl ? <PDFViewer pdfUrl={pdfUrl} /> : <Alert variant="danger">PDF verisi bulunamadı</Alert>}
+      <Footer />
     </Container>
   );
 };

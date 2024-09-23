@@ -4,27 +4,25 @@ import Cookies from 'js-cookie'; // veya token'ı sakladığınız başka bir ye
 
 const HTTP = axios.create({
   baseURL: "http://localhost:5000", 
+  // Eğer uzaktaki bir sunucu kullanıyorsan URL'yi değiştir
+  // baseURL: "https://ly-backend-8gjq.onrender.com",
   headers: {
     'Content-Type': 'application/json',
-},
+  },
 });
-
-  // https://ly-backend-8gjq.onrender.com
-  // http://localhost:5000
-  // onur ulu
 
 // Token'ı her istekle birlikte eklemek için interceptors kullanın
 HTTP.interceptors.request.use(
-(config) => {
+  (config) => {
     const token = Cookies.get('token'); // Veya token'ı nerede saklıyorsanız
     if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
-},
-(error) => {
+  },
+  (error) => {
     return Promise.reject(error);
-}
+  }
 );
 
 export default HTTP;

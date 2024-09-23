@@ -8,6 +8,7 @@ import logo from "../ustlogo.png"; // Resmin yolunu kontrol edin ve import edin
 import { Row, Col } from "react-bootstrap";
 import { logout } from "../axios/userApi"; // Çıkış yapma fonksiyonunu import et
 import { getPdfTitles } from "../axios/pdfApi"; // PDF başlıklarını almak için
+import SearchBar from "./SearchBar";
 
 function Header({ user, setUser }) {
   const location = useLocation();
@@ -48,15 +49,7 @@ function Header({ user, setUser }) {
 
   return (
     <>
-      <Row className="justify-content-center align-items-center">
-        <Col xs="auto">
-          <Navbar.Brand>
-            <Link to="/home">
-              <img alt="Logo" src={logo} className="d-inline-block align-top" />{" "}
-            </Link>
-          </Navbar.Brand>
-        </Col>
-      </Row>
+    <SearchBar/>
       <Row>
         <Navbar expand="lg" className="bg-body-tertiary py-3">
           <Container>
@@ -127,84 +120,8 @@ function Header({ user, setUser }) {
                     {pdf.name} {/* PDF başlığı */}
                   </Nav.Link>
                 ))}
-
-                {/* Kullanıcı giriş yapmışsa Profil ve Admin linkleri */}
-                {user && (
-                  <>
-                    <Nav.Link
-                      as={Link}
-                      to="/profile"
-                      active={location.pathname === "/profile"}
-                      style={
-                        location.pathname === "/profile"
-                          ? { backgroundColor: "rgba(111, 111, 128, .3)" }
-                          : {}
-                      }
-                    >
-                      Profil
-                    </Nav.Link>
-
-                    {user.userType === "ADMIN" && (
-                      <Nav.Link
-                        as={Link}
-                        to="/admin"
-                        active={location.pathname === "/admin"}
-                        style={
-                          location.pathname === "/admin"
-                            ? { backgroundColor: "rgba(111, 111, 128, .3)" }
-                            : {}
-                        }
-                      >
-                        Admin Paneli
-                      </Nav.Link>
-                    )}
-
-                    {/* Sepet linki sadece kullanıcı giriş yapmışsa gösterilir */}
-                    <Nav.Link
-                      as={Link}
-                      to="/cart"
-                      active={location.pathname === "/cart"}
-                      style={
-                        location.pathname === "/cart"
-                          ? { backgroundColor: "rgba(111, 111, 128, .3)" }
-                          : {}
-                      }
-                    >
-                      Sepet
-                    </Nav.Link>
-                  </>
-                )}
               </Nav>
 
-              {/* Giriş ve Kayıt Butonları */}
-              {user ? (
-                <Button
-                  variant="dark"
-                  onClick={() => {
-                    localStorage.removeItem("user");
-                    setUser(null);
-                    navigate("/signin");
-                  }}
-                >
-                  Çıkış yap
-                </Button>
-              ) : (
-                <>
-                  <Button
-                    variant="primary"
-                    onClick={() => navigate("/signup")}
-                  >
-                    Kayıt Ol
-                  </Button>
-                  <Button
-                    variant="primary"
-                    className="me-2"
-                    onClick={() => navigate("/signin")}
-                  >
-                    Giriş Yap
-                  </Button>
-                </>
-              )}
             </Navbar.Collapse>
           </Container>
         </Navbar>

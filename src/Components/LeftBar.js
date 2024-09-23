@@ -26,19 +26,25 @@ const LeftBar = () => {
   }
 
   return (
-    <ListGroup variant="flush">
-      {categories.length === 0 ? (
-        <ListGroup.Item>Mevcut kategori bulunmamaktadır.</ListGroup.Item>
-      ) : (
-        categories.map(category => (
-          <ListGroup.Item key={category._id}>
-            <Link to={`/books/category/${category._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              {category.name}
-            </Link>
-          </ListGroup.Item>
-        ))
-      )}
-    </ListGroup>
+    <div > {/* Arka plan rengi mavi */}
+      <h4 >Tüm Kategoriler</h4> {/* Başlık eklendi */}
+      <ListGroup variant="flush">
+        {categories.length === 0 ? (
+          <ListGroup.Item>Mevcut kategori bulunmamaktadır.</ListGroup.Item>
+        ) : (
+          categories.map(category => (
+            <ListGroup.Item
+              key={category._id}
+              
+            >
+              <Link to={`/books/category/${category._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                {category.name}
+              </Link>
+            </ListGroup.Item>
+          ))
+        )}
+      </ListGroup>
+    </div>
   );
 };
 

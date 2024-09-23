@@ -1,6 +1,12 @@
 import React, { useState } from "react";
-import { MDBContainer, MDBCard, MDBCardBody, MDBInput, MDBBtn } from "mdb-react-ui-kit";
-import './CustomerInfoScreen.css'; // Özel CSS dosyası ekleyin
+import {
+  MDBContainer,
+  MDBCard,
+  MDBCardBody,
+  MDBInput,
+  MDBBtn,
+} from "mdb-react-ui-kit";
+import "./CustomerInfoScreen.css"; // Özel CSS dosyası ekleyin
 
 const CustomerInfoScreen = ({ onCustomerSubmit }) => {
   const [customerData, setCustomerData] = useState({
@@ -126,7 +132,9 @@ const CustomerInfoScreen = ({ onCustomerSubmit }) => {
               className="my-3"
               invalid={!!errors.phoneNumber}
             />
-            {errors.phoneNumber && <p className="error-text">{errors.phoneNumber}</p>}
+            {errors.phoneNumber && (
+              <p className="error-text">{errors.phoneNumber}</p>
+            )}
           </div>
 
           <div className="form-group">
@@ -138,18 +146,27 @@ const CustomerInfoScreen = ({ onCustomerSubmit }) => {
               className="my-3"
               invalid={!!errors.tcIdNumber}
             />
-            {errors.tcIdNumber && <p className="error-text">{errors.tcIdNumber}</p>}
+            {errors.tcIdNumber && (
+              <p className="error-text">{errors.tcIdNumber}</p>
+            )}
           </div>
 
-          <MDBBtn
+          <button
             onClick={handleSubmit}
-            color="primary"
-            size="lg"
-            block
-            style={{ transition: "none" }}
+            style={{
+              backgroundColor: "#007bff", // Bootstrap'in 'primary' rengi
+              color: "white",
+              padding: "10px 20px",
+              fontSize: "16px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              width: "100%", // 'block' yapısı için genişliği %100 ayarlıyoruz
+              transition: "none", // Butona tıklanıldığında herhangi bir animasyon olmasını istemiyorsanız
+            }}
           >
             Devam Et
-          </MDBBtn>
+          </button>
         </MDBCardBody>
       </MDBCard>
     </MDBContainer>

@@ -28,7 +28,10 @@ function Header({ user, setUser }) {
     const fetchPdfTitles = async () => {
       try {
         const titles = await getPdfTitles(); // Veritabanından PDF başlıklarını getir
-        setPdfTitles(titles.filter((pdf) => !pdf.isHidden)); // isHidden: false olanları filtrele
+        // titles'ın dizi olup olmadığını kontrol et, değilse boş bir dizi ata
+        setPdfTitles(
+          Array.isArray(titles) ? titles.filter((pdf) => !pdf.isHidden) : []
+        );
       } catch (error) {
         console.error("PDF başlıkları alınırken hata oluştu:", error);
       }
@@ -49,7 +52,7 @@ function Header({ user, setUser }) {
 
   return (
     <>
-    <SearchBar/>
+      <SearchBar />
       <Row>
         <Navbar expand="lg" className="bg-body-tertiary py-3">
           <Container>
@@ -94,7 +97,7 @@ function Header({ user, setUser }) {
                 </Nav.Link>
                 <Nav.Link
                   as={Link}
-                  to="/price-list"
+                  to="/price-list-v2"
                   active={location.pathname === "/price-list"}
                   style={
                     location.pathname === "/price-list"
@@ -121,7 +124,6 @@ function Header({ user, setUser }) {
                   </Nav.Link>
                 ))}
               </Nav>
-
             </Navbar.Collapse>
           </Container>
         </Navbar>

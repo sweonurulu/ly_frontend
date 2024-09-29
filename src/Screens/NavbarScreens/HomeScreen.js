@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { listBooks } from '../../axios/bookApi';
-import { useNavigate } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
-import LeftBar from '../../Components/LeftBar';
-import Footer from '../../Components/Footer';
-import '../../styles.css';  // <-- CSS dosyasını buradan import edin
+import React, { useEffect, useState } from "react";
+import { listBooks } from "../../axios/bookApi";
+import { useNavigate } from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import LeftBar from "../../Components/LeftBar";
+import Footer from "../../Components/Footer";
+import "../../styles.css"; // <-- CSS dosyasını buradan import edin
 
 const HomeScreen = ({ user }) => {
   const [books, setBooks] = useState([]);
@@ -18,10 +18,11 @@ const HomeScreen = ({ user }) => {
     const fetchBooks = async () => {
       try {
         const response = await listBooks();
-        setBooks(response);
+        // response'ın dizi olup olmadığını kontrol et, değilse boş bir dizi ata
+        setBooks(Array.isArray(response) ? response : []);
         setLoading(false);
       } catch (err) {
-        setError('Kitaplar yüklenirken bir hata oluştu.');
+        setError("Kitaplar yüklenirken bir hata oluştu.");
         setLoading(false);
       }
     };
@@ -66,19 +67,31 @@ const HomeScreen = ({ user }) => {
             ) : (
               <div className="row">
                 {currentBooks.map((book) => (
-                  <div key={book._id} className="kutu" onClick={() => navigate(`/book/${book._id}`)}>
+                  <div
+                    key={book._id}
+                    className="kutu"
+                    onClick={() => navigate(`/book/${book._id}`)}
+                  >
                     <div className="row">
                       <div className="col-sm-4">
-                        <img src={book.bookImg} className="img-thumbnail home-img-thumbnail" alt={book.bookName} />
+                        <img
+                          src={book.bookImg}
+                          className="img-thumbnail home-img-thumbnail"
+                          alt={book.bookName}
+                        />
                       </div>
                       <div className="col-sm-8">
                         <div className="kitapad">{book.bookName}</div>
                         <div className="kitapyazar">
-                          {Array.isArray(book.bookCategory) 
-                            ? book.bookCategory.map(cat => cat.name).join(', ') 
-                            : 'Kategori bulunamadı'}
+                          {Array.isArray(book.bookCategory)
+                            ? book.bookCategory
+                                .map((cat) => cat.name)
+                                .join(", ")
+                            : "Kategori bulunamadı"}
                         </div>
-                        <div className="kitapyazar">{book.authors.join(', ')}</div>
+                        <div className="kitapyazar">
+                          {book.authors.join(", ")}
+                        </div>
                         <div className="kitapfiyat">{book.price} TL</div>
                       </div>
                     </div>
@@ -90,7 +103,10 @@ const HomeScreen = ({ user }) => {
               <button onClick={handlePreviousPage} disabled={currentPage === 1}>
                 Önceki
               </button>
-              <button onClick={handleNextPage} disabled={indexOfLastBook >= books.length}>
+              <button
+                onClick={handleNextPage}
+                disabled={indexOfLastBook >= books.length}
+              >
                 Sonraki
               </button>
             </div>

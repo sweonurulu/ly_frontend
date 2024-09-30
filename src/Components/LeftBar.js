@@ -12,8 +12,14 @@ const LeftBar = () => {
     const fetchCategories = async () => {
       try {
         const response = await listCategories();
-        setCategories(response);
+        
+        // API'den dönen veriyi konsolda görüntüleyelim
+        console.log(response);
+        
+        // Eğer response bir array değilse varsayılan olarak boş bir array atanır
+        setCategories(Array.isArray(response) ? response : []);
       } catch (error) {
+        console.error(error); // Hatanın detayını konsola yazdır
         setError('Kategoriler yüklenirken bir hata oluştu.');
       }
     };
@@ -33,10 +39,7 @@ const LeftBar = () => {
           <ListGroup.Item>Mevcut kategori bulunmamaktadır.</ListGroup.Item>
         ) : (
           categories.map(category => (
-            <ListGroup.Item
-              key={category._id}
-              
-            >
+            <ListGroup.Item key={category._id}>
               <Link to={`/books/category/${category._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 {category.name}
               </Link>

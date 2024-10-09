@@ -12,15 +12,29 @@ const PdfViewer = () => {
   const [pdfData, setPdfData] = useState(null);
 
   useEffect(() => {
+    if (!pdfId) {
+      setError('PDF ID eksik.');
+      setLoading(false);
+      return;
+    }
+
     const fetchPdf = async () => {
       try {
         const response = await getPdfContent(pdfId); // PDF verisini _id ile getir
-        const pdfBlob = new Blob([response], { type: 'application/pdf' });
-        const pdfUrl = URL.createObjectURL(pdfBlob);
-        setPdfData(pdfUrl); // PDF URL'sini state'e kaydet
+        console.log("PDF verisi alındı:", response);
+
+        if (response && response.byteLength > 0) {
+          // ArrayBuffer'dan Blob oluşturma
+          const pdfBlob = new Blob([response], { type: 'application/pdf' });
+          const pdfUrl = URL.createObjectURL(pdfBlob);
+          console.log(pdfUrl);
+          setPdfData(pdfUrl);  // PDF URL'sini state'e kaydet
+        } else {
+          throw new Error('Boş veya geçersiz PDF verisi alındı.');
+        }
         setLoading(false);
       } catch (error) {
-        setError('PDF yüklenirken bir hata oluştu.');
+        setError(error.message || 'PDF yüklenirken bir hata oluştu.');
         setLoading(false);
       }
     };
@@ -51,7 +65,7 @@ const PdfViewer = () => {
           <LeftBar /> {/* LeftBar bileşeni sol tarafta */}
         </Col>
         <Col md={9}>
-          {pdfData && (
+          {pdfData ? (
             <iframe
               src={pdfData}
               title={pdfId}
@@ -59,6 +73,8 @@ const PdfViewer = () => {
               height="800px"
               style={{ border: 'none' }}
             />
+          ) : (
+            <Alert variant="warning">PDF dokümanı yüklenemedi.</Alert>
           )}
         </Col>
       </Row>

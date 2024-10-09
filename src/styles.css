@@ -1,71 +1,75 @@
 .kutu {
-    margin: 5px;
-    width: 356px;
-    height: 160px;
+    margin: 15px;
+    width: 250px; /* Blok genişliği */
+    height: 400px; /* Blok yüksekliği */
     float: left;
-    padding: 5px;
+    padding: 10px;
     border: solid 1px #CCC;
     background-color: #FFFFFF;
     cursor: pointer;
     box-shadow: 2px 2px 5px #999;
     transition: background-color 0.3s ease;
+    text-align: center; /* İçerikleri ortalar */
+    overflow: hidden; /* İçerik taşmasını engeller */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
-  
+
 .kutu:hover {
     background-color: #e7e7e7;
 }
-  
+
 .kitapad {
     font-weight: bold;
     font-size: 1.1em;
     color: #333;
+    margin-top: 10px;
+    word-wrap: break-word; /* Yazının taşmasını engeller */
 }
-  
+
 .kitapyazar {
     font-size: 0.9em;
     color: #666;
+    margin-top: 5px;
+    word-wrap: break-word; /* Yazının taşmasını engeller */
 }
-  
+
 .kitapfiyat {
     font-size: 1.2em;
     color: #F00;
     margin-top: 10px;
 }
-  
+
 .img-thumbnail {
-    width: 100px; /* Resmin genişliği küçültüldü */
-    height: 150px; /* Resmin yüksekliği küçültüldü */
+    width: 140px; /* Resmin genişliği */
+    height: 200px; /* Resmin yüksekliği */
     object-fit: cover; /* Resmi kutunun boyutlarına sığacak şekilde kırpar */
     box-shadow: 2px 2px 5px #999;
+    margin: 0 auto; /* Resmi ortalamak için */
 }
-
-.home-img-thumbnail {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
 
 .book-info {
-    padding: 15px;
+    padding: 10px;
     border: 1px solid #ddd;
-    margin-bottom: 20px;
     background-color: #f9f9f9;
-  }
-  
-  .book-info .kitapad {
+    text-align: center;
+    overflow: hidden; /* İçerik taşmasını engeller */
+    word-wrap: break-word; /* Yazının taşmasını engeller */
+}
+
+.book-info .kitapad {
     font-size: 1.2rem;
     font-weight: bold;
     margin-bottom: 10px;
-  }
-  
-  .book-info .kitapyazar {
+}
+
+.book-info .kitapyazar {
     color: #555;
-    font-size: 0.85em; /* Font boyutu küçültüldü */
-  }
-  
-  .book-info .kitapfiyat {
+    font-size: 0.85em;
+}
+
+.book-info .kitapfiyat {
     color: #28a745;
     font-weight: bold;
-  }
-  
+}

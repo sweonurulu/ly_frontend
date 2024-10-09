@@ -106,7 +106,7 @@ const OptionalFieldsScreen = ({ formData, setFormData }) => {
             <Form.Group className="mb-2" controlId="formBasicLanguage">
               <Form.Label>Yayın Dili</Form.Label>
               <Form.Control
-                value={formData.language || "Türkçe"} // Varsayılan değer Türkçe
+                value={formData.language || ""} // Varsayılan değer Türkçe
                 onChange={(e) =>
                   setFormData({ ...formData, language: e.target.value })
                 }

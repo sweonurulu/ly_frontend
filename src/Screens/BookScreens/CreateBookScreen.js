@@ -18,13 +18,13 @@ const CreateBookScreen = () => {
     publishDate: "",
     bindingType: "",
     edition: "",
-    language: "Türkçe",
+    language: "",
     dimensions: "",
     bookDescription: "",
   });
   const [bookImg, setBookImg] = useState(null); // Kitap görseli
   const [previewPdf, setPreviewPdf] = useState(null); // Önizleme PDF
-  const [ebookPdf, setEbookPdf] = useState(null); // E-Kitap PDF
+  const [ebookPdf, setEbookPdf] = useState(null); // E-Kitap PDF (zorunlu değil)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,7 +41,7 @@ const CreateBookScreen = () => {
       bookData.append("previewPdf", previewPdf);
     }
     if (ebookPdf) {
-      bookData.append("ebookPdf", ebookPdf);
+      bookData.append("ebookPdf", ebookPdf); // E-Kitap PDF dosyası opsiyonel
     }
 
     createBook(bookData)
@@ -83,13 +83,13 @@ const CreateBookScreen = () => {
         <Form onSubmit={handleSubmit}>
           <Row>
             <Col>
-              <h3>Kitap Bilgileri</h3>
+              <h3>Yeni Kitap Oluştur veya Kitap Bilgilerini Güncelle</h3>
               <RequiredFieldsScreen
                 formData={formData}
                 setFormData={setFormData}
                 setBookImg={setBookImg}
                 setPreviewPdf={setPreviewPdf} // Props olarak geçiriyoruz
-                setEbookPdf={setEbookPdf} // Props olarak geçiriyoruz
+                setEbookPdf={setEbookPdf} // E-Kitap opsiyonel
               />
               <Accordion className="mt-4">
                 <Accordion.Item eventKey="0">

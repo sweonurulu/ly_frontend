@@ -28,14 +28,15 @@ export const getPdfTitles = async () => {
 export const getPdfContent = async (pdfId) => {
   try {
     const response = await HTTP.get(`/content-pdf/get-pdf/${pdfId}`, {
-      responseType: 'arraybuffer', // PDF verisi buffer olarak dönecek
+      responseType: 'arraybuffer',  // PDF verisi buffer olarak dönecek
     });
-    return response.data;
+    return response.data;  // PDF verisi arraybuffer formatında dönecek
   } catch (error) {
     console.error('PDF verisi alınırken hata oluştu:', error);
     throw error;
   }
 };
+
 
 export const getBookPdf = async (bookId, token) => {
   try {

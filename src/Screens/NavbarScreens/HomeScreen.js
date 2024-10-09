@@ -18,7 +18,6 @@ const HomeScreen = ({ user }) => {
     const fetchBooks = async () => {
       try {
         const response = await listBooks();
-        // response'ın dizi olup olmadığını kontrol et, değilse boş bir dizi ata
         setBooks(Array.isArray(response) ? response : []);
         setLoading(false);
       } catch (err) {
@@ -65,35 +64,29 @@ const HomeScreen = ({ user }) => {
                 <p>Şu anda mevcut kitap bulunmamaktadır.</p>
               </div>
             ) : (
-              <div className="row">
+              <div className="d-flex flex-wrap justify-content-start">
                 {currentBooks.map((book) => (
                   <div
                     key={book._id}
                     className="kutu"
                     onClick={() => navigate(`/book/${book._id}`)}
                   >
-                    <div className="row">
-                      <div className="col-sm-4">
-                        <img
-                          src={book.bookImg}
-                          className="img-thumbnail home-img-thumbnail"
-                          alt={book.bookName}
-                        />
+                    <img
+                      src={book.bookImg}
+                      className="img-thumbnail"
+                      alt={book.bookName}
+                    />
+                    <div className="book-info">
+                      <div className="kitapad">{book.bookName}</div>
+                      <div className="kitapyazar">
+                        {Array.isArray(book.bookCategory)
+                          ? book.bookCategory.map((cat) => cat.name).join(", ")
+                          : "Kategori bulunamadı"}
                       </div>
-                      <div className="col-sm-8">
-                        <div className="kitapad">{book.bookName}</div>
-                        <div className="kitapyazar">
-                          {Array.isArray(book.bookCategory)
-                            ? book.bookCategory
-                                .map((cat) => cat.name)
-                                .join(", ")
-                            : "Kategori bulunamadı"}
-                        </div>
-                        <div className="kitapyazar">
-                          {book.authors.join(", ")}
-                        </div>
-                        <div className="kitapfiyat">{book.price} TL</div>
+                      <div className="kitapyazar">
+                        {book.authors.join(", ")}
                       </div>
+                      <div className="kitapfiyat">{book.price} TL</div>
                     </div>
                   </div>
                 ))}

@@ -157,7 +157,7 @@ const BookScreen = () => {
                   )}
 
                   <div className="mt-4 text-center">
-                    <h5>Kiralama Seçenekleri</h5>
+                    <h5>Kitap PDF Kiralama Seçenekleri</h5>
                     <Button
                       variant="outline-primary"
                       className="w-100 mb-2"

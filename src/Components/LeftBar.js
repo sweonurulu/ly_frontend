@@ -14,7 +14,7 @@ const LeftBar = () => {
         const response = await listCategories();
         
         // API'den dönen veriyi konsolda görüntüleyelim
-        console.log(response);
+        //console.log(response);
         
         // Eğer response bir array değilse varsayılan olarak boş bir array atanır
         setCategories(Array.isArray(response) ? response : []);

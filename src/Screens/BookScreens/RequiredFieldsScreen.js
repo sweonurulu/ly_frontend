@@ -111,11 +111,11 @@ const RequiredFieldsScreen = ({ formData, setFormData, setBookImg, setPreviewPdf
             </Form.Group>
 
             <Form.Group className="mb-2" controlId="formBasicEbookPdf">
-              <Form.Label>E-Kitap PDF Dosyası</Form.Label>
+              <Form.Label>E-Kitap PDF Dosyası (Opsiyonel)</Form.Label>
               <Form.Control
                 type="file"
                 accept="application/pdf"
-                onChange={(e) => setEbookPdf(e.target.files[0])} // E-Kitap PDF dosyasını set et
+                onChange={(e) => setEbookPdf(e.target.files[0])} // E-Kitap PDF dosyasını set et (zorunlu değil)
               />
             </Form.Group>
           </Form>

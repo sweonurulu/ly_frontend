@@ -15,6 +15,7 @@ import InfoScreen from "./Screens/NavbarScreens/InfoScreen.js";
 import ContactScreenUser from "./Screens/NavbarScreens/ContactScreenUser.js";
 import ContactScreenGuest from "./Screens/NavbarScreens/ContactScreenGuest.js";
 import NavbarPdfViewer from "./Screens/PdfScreens/NavbarPdfViewer.js";
+import Hakkimizda from "./Screens/NavbarScreens/Hakkimizda.js";
 
 
 // USER
@@ -117,6 +118,7 @@ function App() {
             <Route path="/" element={<HomeScreen user={user} />} exact />
             <Route path="/home" element={<HomeScreen user={user} />} exact />
             <Route path="/info" element={<InfoScreen />} />
+            <Route path="/hakkimizda" element={<Hakkimizda />} />
             <Route
               path="/contact"
               element={user ? <ContactScreenUser /> : <ContactScreenGuest />}

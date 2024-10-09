@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../ustlogo.png"; // Resmin yolunu kontrol edin ve import edin
-import { Row, Col } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import { logout } from "../axios/userApi"; // Çıkış yapma fonksiyonunu import et
 import { getPdfTitles } from "../axios/pdfApi"; // PDF başlıklarını almak için
 import SearchBar from "./SearchBar";
@@ -28,7 +26,6 @@ function Header({ user, setUser }) {
     const fetchPdfTitles = async () => {
       try {
         const titles = await getPdfTitles(); // Veritabanından PDF başlıklarını getir
-        // titles'ın dizi olup olmadığını kontrol et, değilse boş bir dizi ata
         setPdfTitles(
           Array.isArray(titles) ? titles.filter((pdf) => !pdf.isHidden) : []
         );
@@ -73,10 +70,10 @@ function Header({ user, setUser }) {
                 </Nav.Link>
                 <Nav.Link
                   as={Link}
-                  to="/info"
-                  active={location.pathname === "/info"}
+                  to="/hakkimizda" // Hakkımızda sayfası için güncel bağlantı
+                  active={location.pathname === "/hakkimizda"}
                   style={
-                    location.pathname === "/info"
+                    location.pathname === "/hakkimizda"
                       ? { backgroundColor: "rgba(111, 111, 128, .3)" }
                       : {}
                   }
@@ -95,6 +92,10 @@ function Header({ user, setUser }) {
                 >
                   Müşteri Hizmetleri
                 </Nav.Link>
+                
+                {/* Fiyat Listesi sayfasını inaktif etme */}
+                {/* Eğer bu sayfayı inaktif etmek isterseniz yorum satırı haline getirin */}
+                {/*
                 <Nav.Link
                   as={Link}
                   to="/price-list-v2"
@@ -107,6 +108,7 @@ function Header({ user, setUser }) {
                 >
                   Fiyat Listesi
                 </Nav.Link>
+                */}
 
                 {/* Veritabanından PDF başlıkları */}
                 {pdfTitles.map((pdf) => (

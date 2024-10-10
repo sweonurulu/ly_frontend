@@ -10,8 +10,9 @@ const BookDetailsScreen = ({ book, bookId }) => {
             variant="top"
             src={book.bookImg || "/default-image.jpg"}
             style={{
-              maxHeight: "300px",
-              width: "auto",
+              height: "300px", // Yüksekliği sabit 400px olarak belirledim
+              width: "40%", // Genişliği %100 yaparak sabit bir genişlik sağladım
+              objectFit: "cover", // Resmi belirlenen alana sığdırırken oranını koruyarak kırpma
             }}
           />
         </Col>

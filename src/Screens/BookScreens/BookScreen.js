@@ -156,30 +156,33 @@ const BookScreen = () => {
                     </>
                   )}
 
-                  <div className="mt-4 text-center">
-                    <h5>Kitap PDF Kiralama Seçenekleri</h5>
-                    <Button
-                      variant="outline-primary"
-                      className="w-100 mb-2"
-                      onClick={() => handleRentalClick("3 months")}
-                    >
-                      3 Aylık Kirala: {book.threeMonthRentalPrice} TL
-                    </Button>
-                    <Button
-                      variant="outline-primary"
-                      className="w-100 mb-2"
-                      onClick={() => handleRentalClick("6 months")}
-                    >
-                      6 Aylık Kirala: {book.sixMonthRentalPrice} TL
-                    </Button>
-                    <Button
-                      variant="outline-primary"
-                      className="w-100"
-                      onClick={() => handleRentalClick("12 months")}
-                    >
-                      12 Aylık Kirala: {book.oneYearRentalPrice} TL
-                    </Button>
-                  </div>
+{/* Eğer bookPdfUploaded true ise kiralama seçeneklerini göster */}
+{book.bookPdfUploaded && (
+                    <div className="mt-4 text-center">
+                      <h5>Kitap PDF Kiralama Seçenekleri</h5>
+                      <Button
+                        variant="outline-primary"
+                        className="w-100 mb-2"
+                        onClick={() => handleRentalClick("3 months")}
+                      >
+                        3 Aylık Kirala: {book.threeMonthRentalPrice} TL
+                      </Button>
+                      <Button
+                        variant="outline-primary"
+                        className="w-100 mb-2"
+                        onClick={() => handleRentalClick("6 months")}
+                      >
+                        6 Aylık Kirala: {book.sixMonthRentalPrice} TL
+                      </Button>
+                      <Button
+                        variant="outline-primary"
+                        className="w-100"
+                        onClick={() => handleRentalClick("12 months")}
+                      >
+                        12 Aylık Kirala: {book.oneYearRentalPrice} TL
+                      </Button>
+                    </div>
+                  )}
                 </Card.Body>
               </Card>
             </div>

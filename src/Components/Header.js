@@ -95,10 +95,10 @@ function Header({ user, setUser }) {
                 
                 {/* Fiyat Listesi sayfasını inaktif etme */}
                 {/* Eğer bu sayfayı inaktif etmek isterseniz yorum satırı haline getirin */}
-                {/*
+                
                 <Nav.Link
                   as={Link}
-                  to="/price-list-v2"
+                  to="/price-list"
                   active={location.pathname === "/price-list"}
                   style={
                     location.pathname === "/price-list"
@@ -108,7 +108,6 @@ function Header({ user, setUser }) {
                 >
                   Fiyat Listesi
                 </Nav.Link>
-                */}
 
                 {/* Veritabanından PDF başlıkları */}
                 {pdfTitles.map((pdf) => (

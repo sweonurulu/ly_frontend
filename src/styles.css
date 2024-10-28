@@ -1,16 +1,15 @@
 .kutu {
     margin: 15px;
-    width: 250px; /* Blok genişliği */
-    height: 400px; /* Blok yüksekliği */
-    float: left;
+    width: 200px; /* Genişliği biraz küçülttüm */
+    height: 350px; /* Yüksekliği de küçülttüm */
     padding: 10px;
     border: solid 1px #CCC;
     background-color: #FFFFFF;
     cursor: pointer;
     box-shadow: 2px 2px 5px #999;
     transition: background-color 0.3s ease;
-    text-align: center; /* İçerikleri ortalar */
-    overflow: hidden; /* İçerik taşmasını engeller */
+    text-align: center;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -20,19 +19,23 @@
     background-color: #e7e7e7;
 }
 
+.kitapad, .kitapyazar, .kitapfiyat {
+    white-space: nowrap; /* Tek satır yapar */
+    overflow: hidden; /* Taşan içeriği gizler */
+    text-overflow: ellipsis; /* ... ekler */
+}
+
 .kitapad {
     font-weight: bold;
     font-size: 1.1em;
     color: #333;
     margin-top: 10px;
-    word-wrap: break-word; /* Yazının taşmasını engeller */
 }
 
 .kitapyazar {
     font-size: 0.9em;
     color: #666;
     margin-top: 5px;
-    word-wrap: break-word; /* Yazının taşmasını engeller */
 }
 
 .kitapfiyat {
@@ -42,11 +45,12 @@
 }
 
 .img-thumbnail {
-    width: 140px; /* Resmin genişliği */
-    height: 200px; /* Resmin yüksekliği */
-    object-fit: cover; /* Resmi kutunun boyutlarına sığacak şekilde kırpar */
-    box-shadow: 2px 2px 5px #999;
-    margin: 0 auto; /* Resmi ortalamak için */
+    width: 80%; /* Genişlik kutuya göre ayarlandı */
+    height: 80%; /* Görseli biraz küçülttüm */
+    object-fit: contain; /* Resmi kutunun içine sığacak şekilde ayarlar */
+    border-radius: 8px; /* Köşeleri yuvarlar */
+    box-shadow: 2px 2px 5px #999; /* Gölge efekti */
+    margin: 0 auto; /* Ortalamak için */
 }
 
 .book-info {
@@ -54,22 +58,6 @@
     border: 1px solid #ddd;
     background-color: #f9f9f9;
     text-align: center;
-    overflow: hidden; /* İçerik taşmasını engeller */
-    word-wrap: break-word; /* Yazının taşmasını engeller */
-}
-
-.book-info .kitapad {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.book-info .kitapyazar {
-    color: #555;
-    font-size: 0.85em;
-}
-
-.book-info .kitapfiyat {
-    color: #28a745;
-    font-weight: bold;
+    word-wrap: break-word;
+    overflow: hidden;
 }

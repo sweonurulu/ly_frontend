@@ -1,18 +1,34 @@
 import React from "react";
 import { Card, Table, Button, Row, Col } from "react-bootstrap";
 
+// Buffer'dan Base64 stringine dönüştürme fonksiyonu
+const convertBufferToBase64 = (buffer) => {
+  let binary = '';
+  const bytes = new Uint8Array(buffer);
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return window.btoa(binary);
+};
+
+
 const BookDetailsScreen = ({ book, bookId }) => {
+  console.log("Gelen kitap verisi:", book);
   return (
     <Card className="mt-4">
       <Row noGutters>
         <Col md={12} className="text-center">
           <Card.Img
             variant="top"
-            src={book.bookImg || "/default-image.jpg"}
+            src={
+              book.bookImg
+                ? book.bookImg // Gelen base64 verisi
+                : "/default-image.jpg" // Varsayılan resim
+            }
             style={{
-              height: "300px", // Yüksekliği sabit 400px olarak belirledim
-              width: "40%", // Genişliği %100 yaparak sabit bir genişlik sağladım
-              objectFit: "cover", // Resmi belirlenen alana sığdırırken oranını koruyarak kırpma
+              height: "300px",
+              width: "40%",
+              objectFit: "cover",
             }}
           />
         </Col>
@@ -79,6 +95,13 @@ const BookDetailsScreen = ({ book, bookId }) => {
                   <tr>
                     <td><strong>Baskı Yılı:</strong></td>
                     <td>{book.publishDate}</td>
+                  </tr>
+                )}
+                {/* Kitabın kategorisini göstermek */}
+                {book.bookCategory && (
+                  <tr>
+                    <td><strong>Kategoriler:</strong></td>
+                    <td>{book.bookCategory.map(category => category.name).join(", ")}</td>
                   </tr>
                 )}
               </tbody>

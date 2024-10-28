@@ -10,6 +10,7 @@ import LeftBar from "../../Components/LeftBar";
 import toast, { Toaster } from "react-hot-toast";
 import BookDetailsScreen from "./BookDetailsScreen"; // Kitap Detayları bileşenini import et
 import AuthModal from "../../Components/AuthModal"; // AuthModal bileşenini import et
+import LoginRequiredModal from "../../Components/LoginRequiredModal"; // LoginRequiredModal bileşenini import et
 
 const BookScreen = () => {
   const { bookId } = useParams();
@@ -17,7 +18,8 @@ const BookScreen = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null); // Kullanıcı bilgisini tutacak state
-  const [showAuthModal, setShowAuthModal] = useState(false); // Modal kontrolü
+  const [showAuthModal, setShowAuthModal] = useState(false); // Auth modal kontrolü
+  const [showLoginRequiredModal, setShowLoginRequiredModal] = useState(false); // Login required modal kontrolü
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,9 +57,9 @@ const BookScreen = () => {
       return;
     }
 
-    // Eğer kullanıcı giriş yapmamışsa modalı aç
+    // Eğer kullanıcı giriş yapmamışsa LoginRequiredModal aç
     if (!user) {
-      setShowAuthModal(true);
+      setShowLoginRequiredModal(true);
       return;
     }
 
@@ -68,6 +70,11 @@ const BookScreen = () => {
   const handleAddToCart = async () => {
     if (!book || !book._id) {
       toast.error("Kitap bilgileri eksik!");
+      return;
+    }
+
+    if (!user) {
+      setShowLoginRequiredModal(true);
       return;
     }
 
@@ -85,9 +92,8 @@ const BookScreen = () => {
       return;
     }
 
-    // Eğer kullanıcı giriş yapmamışsa modalı aç
     if (!user) {
-      setShowAuthModal(true);
+      setShowLoginRequiredModal(true);
       return;
     }
 
@@ -96,6 +102,10 @@ const BookScreen = () => {
   };
 
   const handleEditBook = () => {
+    if (!user) {
+      setShowLoginRequiredModal(true);
+      return;
+    }
     navigate(`/book/edit/${bookId}`); // Kitap düzenleme sayfasına yönlendir
   };
 
@@ -127,37 +137,30 @@ const BookScreen = () => {
                     variant="primary"
                     onClick={handlePurchase}
                     className="mt-2 w-100"
-                    disabled
                   >
                     Satın Al
                   </Button>
 
-                  {/* Eğer kullanıcı giriş yapmışsa Sepete Ekle butonunu göster */}
-                  {user && (
-                    <>
-                      <Button
-                        variant="success"
-                        onClick={handleAddToCart}
-                        className="mt-2 w-100"
-                      >
-                        Sepete Ekle
-                      </Button>
+                  <Button
+                    variant="success"
+                    onClick={handleAddToCart}
+                    className="mt-2 w-100"
+                  >
+                    Sepete Ekle
+                  </Button>
 
-                      {/* Eğer kullanıcı admin ise Kitabı Düzenle butonunu göster */}
-                      {user.userType === "ADMIN" && (
-                        <Button
-                          variant="warning"
-                          onClick={handleEditBook}
-                          className="mt-2 w-100"
-                        >
-                          Kitabı Düzenle
-                        </Button>
-                      )}
-                    </>
+                  {user && user.userType === "ADMIN" && (
+                    <Button
+                      variant="warning"
+                      onClick={handleEditBook}
+                      className="mt-2 w-100"
+                    >
+                      Kitabı Düzenle
+                    </Button>
                   )}
 
-{/* Eğer bookPdfUploaded true ise kiralama seçeneklerini göster */}
-{book.bookPdfUploaded && (
+                  {/* Eğer bookPdfUploaded true ise kiralama seçeneklerini göster */}
+                  {book.bookPdfUploaded && (
                     <div className="mt-4 text-center">
                       <h5>Kitap PDF Kiralama Seçenekleri</h5>
                       <Button
@@ -195,6 +198,12 @@ const BookScreen = () => {
         show={showAuthModal}
         handleClose={() => setShowAuthModal(false)}
         bookId={book._id}
+      />
+
+      {/* LoginRequiredModal bileşeni */}
+      <LoginRequiredModal
+        show={showLoginRequiredModal}
+        handleClose={() => setShowLoginRequiredModal(false)}
       />
 
       <Footer />

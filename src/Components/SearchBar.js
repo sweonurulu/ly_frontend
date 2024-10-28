@@ -90,13 +90,13 @@ const SearchBar = () => {
           {user ? (
             <>
               {/* Bildirim simgesi */}
-              <Button
+              {/*<Button
                 variant="link"
                 style={{ color: "#000", marginRight: "10px" }}
                 onClick={() => navigate("/notifications")}
               >
                 <BsBell size={24} />
-              </Button>
+              </Button>*/}
 
               {/* Kitap simgesi (My Rentals sayfasına yönlendirir) */}
               <Button

@@ -14,8 +14,6 @@ const BookCategoryScreen = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [categoryName, setCategoryName] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
-    const booksPerPage = 6; // Her sayfada gösterilecek kitap sayısı
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -46,20 +44,6 @@ const BookCategoryScreen = () => {
         fetchCategories();
     }, [categoryId]);
 
-    const indexOfLastBook = currentPage * booksPerPage;
-    const indexOfFirstBook = indexOfLastBook - booksPerPage;
-    const currentBooks = books.slice(indexOfFirstBook, indexOfLastBook);
-
-    const handleNextPage = () => {
-        setCurrentPage(currentPage + 1);
-    };
-
-    const handlePreviousPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
-
     if (loading) {
         return <div>Yükleniyor...</div>;
     }
@@ -76,39 +60,37 @@ const BookCategoryScreen = () => {
                 </Col>
                 <Col md={9}>
                     <h1>{categoryName}</h1>
-                    {currentBooks.length === 0 ? (
+                    {books.length === 0 ? (
                         <p>Bu kategoride mevcut kitap bulunmamaktadır.</p>
                     ) : (
-                        <div className="row">
-                            {currentBooks.map((book) => (
-                                <div key={book._id} className="kutu" onClick={() => navigate(`/book/${book._id}`)}>
-                                    <div className="row">
-                                        <div className="col-sm-4">
-                                            <img src={book.bookImg} className="img-thumbnail home-img-thumbnail" alt={book.bookName} />
+                        <div className="d-flex flex-wrap justify-content-start">
+                            {books.map((book) => (
+                                <div
+                                    key={book._id}
+                                    className="kutu"
+                                    onClick={() => navigate(`/book/${book._id}`)}
+                                >
+                                    <img
+                                        src={book.bookImg}
+                                        className="img-thumbnail"
+                                        alt={book.bookName}
+                                    />
+                                    <div className="book-info">
+                                        <div className="kitapad">{book.bookName}</div>
+                                        <div className="kitapyazar">
+                                            {Array.isArray(book.bookCategory)
+                                                ? book.bookCategory.map((cat) => cat.name).join(", ")
+                                                : "Kategori bulunamadı"}
                                         </div>
-                                        <div className="col-sm-8">
-                                            <div className="kitapad">{book.bookName}</div>
-                                            <div className="kitapyazar">
-                                                {Array.isArray(book.bookCategory) 
-                                                    ? book.bookCategory.map(cat => cat.name).join(', ') 
-                                                    : 'Kategori bulunamadı'}
-                                            </div>
-                                            <div className="kitapyazar">{book.authors.join(', ')}</div>
-                                            <div className="kitapfiyat">{book.price} TL</div>
+                                        <div className="kitapyazar">
+                                            {book.authors.join(", ")}
                                         </div>
+                                        <div className="kitapfiyat">{book.price} TL</div>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     )}
-                    <div className="d-flex justify-content-between mt-4">
-                        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-                            Önceki
-                        </button>
-                        <button onClick={handleNextPage} disabled={indexOfLastBook >= books.length}>
-                            Sonraki
-                        </button>
-                    </div>
                 </Col>
             </Row>
             <Footer />

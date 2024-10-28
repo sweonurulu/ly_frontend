@@ -10,8 +10,6 @@ const HomeScreen = ({ user }) => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const booksPerPage = 6; // Her sayfada gösterilecek kitap sayısı
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,20 +27,6 @@ const HomeScreen = ({ user }) => {
     fetchBooks();
   }, []);
 
-  const indexOfLastBook = currentPage * booksPerPage;
-  const indexOfFirstBook = indexOfLastBook - booksPerPage;
-  const currentBooks = books.slice(indexOfFirstBook, indexOfLastBook);
-
-  const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
   if (loading) {
     return <div>Yükleniyor...</div>;
   }
@@ -59,13 +43,13 @@ const HomeScreen = ({ user }) => {
             <LeftBar />
           </div>
           <div className="col-md-9">
-            {currentBooks.length === 0 ? (
+            {books.length === 0 ? (
               <div>
                 <p>Şu anda mevcut kitap bulunmamaktadır.</p>
               </div>
             ) : (
               <div className="d-flex flex-wrap justify-content-start">
-                {currentBooks.map((book) => (
+                {books.map((book) => (
                   <div
                     key={book._id}
                     className="kutu"
@@ -92,17 +76,6 @@ const HomeScreen = ({ user }) => {
                 ))}
               </div>
             )}
-            <div className="d-flex justify-content-between mt-4">
-              <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-                Önceki
-              </button>
-              <button
-                onClick={handleNextPage}
-                disabled={indexOfLastBook >= books.length}
-              >
-                Sonraki
-              </button>
-            </div>
           </div>
         </div>
       </Container>

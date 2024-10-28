@@ -46,6 +46,17 @@ const Footer = () => {
             <p>&copy; 2024 Lisans Yayıncılık. Tüm Hakları Saklıdır.</p>
           </Col>
         </Row>
+
+        {/* Alt Kısım: Logo */}
+        <Row className="bg-dark text-white">
+          <Col className="text-center">
+            <img
+              src={require('../logo_band_white@3x.png')}
+              alt="Lisans Yayıncılık Logo"
+              style={{ width: '100%' }}
+            />
+          </Col>
+        </Row>
       </Container>
     </footer>
   );
